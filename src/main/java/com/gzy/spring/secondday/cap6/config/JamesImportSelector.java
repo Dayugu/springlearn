@@ -6,6 +6,6 @@ import org.springframework.core.type.AnnotationMetadata;
 public class JamesImportSelector implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata annotationMetadata) {
-        return new String[]{"com.gzy.spring.secondday.cap6.bean.Fish","com.gzy.spring.secondday.cap6.bean.Tiger"};
+        return new String[]{"com.gzy.spring.thirdDay.cap7.bean.Fish","com.gzy.spring.thirdDay.cap7.bean.Tiger"};
     }
 }

@@ -1,6 +1,6 @@
 package com.gzy.spring.secondday.cap6.config;
 
-import com.gzy.spring.secondday.cap6.bean.Dog;
+import com.gzy.spring.thirdDay.cap7.bean.Dog;
 import org.springframework.beans.factory.FactoryBean;
 
 public class JamesFactoryBean implements FactoryBean<Dog> {

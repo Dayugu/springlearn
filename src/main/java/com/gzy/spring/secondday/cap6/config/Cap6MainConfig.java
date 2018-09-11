@@ -1,8 +1,7 @@
 package com.gzy.spring.secondday.cap6.config;
 
 import com.gzy.spring.firstday.Person;
-import com.gzy.spring.secondday.cap6.bean.Cat;
-import com.gzy.spring.secondday.cap6.bean.Dog;
+import com.gzy.spring.thirdDay.cap7.bean.Cat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
