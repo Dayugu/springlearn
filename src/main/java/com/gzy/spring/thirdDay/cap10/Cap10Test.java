@@ -24,4 +24,7 @@ public class Cap10Test {
         app.close();
 
     }
+    public void test(){
+
+    }
 }
