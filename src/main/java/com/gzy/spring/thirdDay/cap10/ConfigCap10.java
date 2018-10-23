@@ -1,6 +1,10 @@
 package com.gzy.spring.thirdDay.cap10;
 
+import com.gzy.spring.thirdDay.cap10.aop.Calculator;
+import com.gzy.spring.thirdDay.cap10.aop.LogAspects;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @Discribe 日志切面类的方法需要动态感知div()方法运行
@@ -14,5 +18,17 @@ import org.springframework.context.annotation.Configuration;
  * @Date 2018/9/11 17:45
  */
 @Configuration
+@EnableAspectJAutoProxy
 public class ConfigCap10 {
+
+    @Bean
+    public Calculator calculator(){
+        return  new Calculator();
+    }
+
+    @Bean
+    public LogAspects logAspects(){
+        return new LogAspects();
+    }
+
 }

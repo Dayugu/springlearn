@@ -1,5 +1,6 @@
 package com.gzy.spring.thirdDay.cap10;
 
+import com.gzy.spring.thirdDay.cap10.aop.Calculator;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,6 +15,13 @@ public class Cap10Test {
     public  void test01(){
         AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(ConfigCap10.class);
 
+        Calculator calculator = app.getBean(Calculator.class);
+
+        int result = calculator.div(2, 1);
+
+        System.out.println("result = "+result);
+
+        app.close();
 
     }
 }
