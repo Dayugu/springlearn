@@ -27,6 +27,106 @@ public class ZookeeperTest {
 
     private static ZooKeeper zookeeper;
 
+    //测试路径
+    static String nodeName ="/test";
+    static String nodeData ="data";
+
+    static String childNode = "/test/child";
+    static String childData = "child";
+
+    static String cascadeCreate= "/fir/seond/third";
+    static String cascadeCreate2="/cas/f/s/d";
+
+    static String modifyData = "modify";
+
+    static String cascadeNode = "/parent/child";
+
+    public static void main(String[] args) throws  Exception{
+        //创建连接
+        createConnect();
+
+        //常用指令测试
+        //----------------------------------------------------------
+        cascadeTest();
+        //singleTest();
+
+    }
+    /**
+     * 级联创建节点
+     * @param nodePath
+     * @param data
+     * @param zooKeeper
+     * @return
+     */
+    public static boolean cascadeCreateNode(String nodePath, String data , ZooKeeper zooKeeper) throws KeeperException, InterruptedException {
+        System.out.println("nodePath:"+nodePath);
+        boolean flag = false;
+        if (nodePath == null || data == null || zooKeeper == null){
+            return flag;
+        }
+        //先判断是否存在nodepath的节点
+        if (zooKeeper.exists(nodePath, false) != null){
+            return flag;
+        }
+
+        String parentPath = nodePath.substring(0, nodePath.lastIndexOf("/"));
+        //判断父节点是否存在，如果存在，则直接创建子节点；如果不存在，先创建父节点再创建自己点（递归调用）；
+        if (parentPath.length() > 0){
+            cascadeCreateNode(parentPath,data,zooKeeper);
+            zooKeeper.create(nodePath,data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            flag = true;
+        }else {
+            zooKeeper.create(nodePath,data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            flag = true;
+        }
+
+        return flag;
+    }
+
+    /**
+     * 级联删除
+     * @return
+     */
+    public static boolean cascadeDelete(String nodePath, ZooKeeper zooKeeper) throws KeeperException, InterruptedException {
+        System.out.println("nodePath: "+nodePath);
+        if (zooKeeper.exists(nodePath,false) == null){
+            return false;
+        }
+        //递归删除父级节点
+        String parent = nodePath.substring(0,nodePath.lastIndexOf("/"));
+
+        if (parent.length() > 0){
+            //删除当前节点
+            zooKeeper.delete(nodePath,-1);
+            cascadeDelete(parent,zooKeeper);
+            return true;
+        }else {
+            zooKeeper.delete(nodePath,-1);
+            return true;
+        }
+
+
+    }
+
+    //级联测试
+    public static void cascadeTest(){
+
+        try {
+            //boolean flag = cascadeCreateNode(cascadeCreate, "hello", zookeeper);
+            boolean flag = cascadeDelete(cascadeCreate, zookeeper);
+
+            System.out.println(flag);
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
     /**
      * 创建连接
      * @throws IOException
@@ -100,31 +200,10 @@ public class ZookeeperTest {
         zookeeper.delete(nodeName,-1);
     }
 
-    //级联创建
-    public static void cascadeCreateNode(String nodeName, String parentData ,String childData)throws Exception{
-        String[] split = nodeName.split("\\/");
-        for(int i = 0; i < split.length; i++ ){
-            System.out.println(split[i]);
-        }
-    }
 
-    public static void main(String[] args) throws  Exception{
-        //创建连接
-        createConnect();
-
-        //常用指令测试
-        //----------------------------------------------------------
-        String nodeName ="/test";
-        String nodeData ="data";
-
-        String childNode = "/test/child";
-        String childData = "child";
-
-        String modifyData = "modify";
-
-        String cascadeNode = "/parent/child";
-
-        cascadeCreateNode(cascadeNode,null,null);
+    //单节点测试
+    public static  void singleTest() throws Exception {
+        //cascadeCreateNode(cascadeNode,null,null);
 
         //创建节点
         //createNode(nodeName,nodeData);
@@ -150,8 +229,25 @@ public class ZookeeperTest {
         //判断node是否存在，不存在则返回null
         //exists(childNode);
 
-
+        //获取当前节点的子节点
+        List<String> childNode = getChildNode("/cas");
 
 
     }
+
+    /**
+     * 获取当前节点下的所有子节点
+     * @param nodePath
+     * @return
+     * @throws KeeperException
+     * @throws InterruptedException
+     */
+    public static List<String> getChildren(String nodePath) throws KeeperException, InterruptedException {
+        List<String> children = zookeeper.getChildren(nodePath, false);
+        children.forEach(node-> System.out.println(node));
+        System.out.println("nodepath's "+ nodePath +"children size: "+children.size());
+        return children;
+    }
+
+
 }
