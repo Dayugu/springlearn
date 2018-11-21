@@ -47,8 +47,10 @@ public class ZookeeperTest {
 
         //常用指令测试
         //----------------------------------------------------------
-        cascadeTest();
-        //singleTest();
+        //cascadeTest();
+        singleTest();
+        //关闭zookeeper连接
+        zookeeper.close();
 
     }
     /**
@@ -151,6 +153,7 @@ public class ZookeeperTest {
         });
 
         countDownLatch.await();
+
     }
 
     public static void createNode(String nodeName ,String value) throws KeeperException, InterruptedException {
@@ -206,7 +209,7 @@ public class ZookeeperTest {
         //cascadeCreateNode(cascadeNode,null,null);
 
         //创建节点
-        //createNode(nodeName,nodeData);
+        createNode(nodeName,nodeData);
 
         //创建子节点
         //createNode(childNode,childData);
