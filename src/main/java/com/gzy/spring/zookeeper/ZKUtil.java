@@ -47,6 +47,7 @@ public class ZKUtil {
 
     static String path = "/qwer";
     static String value = "text";
+    static String services = "/services";
 
     public static void main(String[] args) throws Exception {
 
@@ -54,7 +55,7 @@ public class ZKUtil {
         connectCluster();
 
         //String s = zooKeeper.create(path, value.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-        byte[] data = zooKeeper.getData(path, false, null);
+        byte[] data = zooKeeper.getData(services, false, null);
         System.out.println("create result : "+new String(data));
 
     }
