@@ -1,5 +1,6 @@
 package com.gzy.spring.thirdDay.cap10.aop;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 
@@ -11,36 +12,40 @@ import org.aspectj.lang.annotation.*;
 @Aspect
 public class LogAspects {
 
-    @Before("execution(public int com.gzy.spring.thirdDay.cap10.aop.Calculator.div(int,int))")
-    public void logStart(){
-        System.out.println("除法运行......logStart");
-    }
-    @After("execution(public int com.gzy.spring.thirdDay.cap10.aop.Calculator.div(int,int))")
-    public void logEnd(){
-        System.out.println("除法运行......logEnd");
+    @Pointcut("execution(public int com.gzy.spring.thirdDay.cap10.aop.Calculator.div(int,int))")
+    public void pointcut() {
     }
 
-    @Around("execution(public int com.gzy.spring.thirdDay.cap10.aop.Calculator.*(..))")
-    public Object logArround(ProceedingJoinPoint p){
-        System.out.println("除法运行......logArround....before");
-        Object result = null;
-        try {
-            result = p.proceed();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+    @Before("pointcut()")
+    public void logStart(JoinPoint joinPoint) {
 
-        System.out.println("除法运行......logArround....after");
+        System.out.println("logbefore,method:"+joinPoint.getSignature()+" params: "+joinPoint.getArgs().toString());
+    }
+
+    @After("pointcut()")
+    public void logEnd() {
+        System.out.println("logend .....");
+    }
+
+    @AfterReturning(value = "pointcut()",returning = "result")
+    public void logReturn(Object result) {
+        System.out.println("logreturn result =...."+result);
+    }
+
+    @AfterThrowing(value="pointcut()",throwing="exception")
+    public void logException(Exception exception){
+        System.out.println("运行异常......异常信息是:{"+exception+"}");
+    }
+
+    @Around("pointcut()")
+    public Object LogAround(ProceedingJoinPoint point) throws Throwable {
+        System.out.println("pointcut before...");
+        Object result = point.proceed();
+        System.out.println("around result = "+result);
+        System.out.println("pointcut after....");
         return result;
-    }
-
-    @Pointcut("execution(* *.div(..))")
-    public void ponitCut(){
-        System.out.println("除法运行......pointcuit");
 
     }
-
 
 
 }
-

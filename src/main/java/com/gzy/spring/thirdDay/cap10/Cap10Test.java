@@ -12,19 +12,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Cap10Test {
 
     @Test
-    public  void test01(){
+    public void test01() {
         AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(ConfigCap10.class);
-
-        Calculator calculator = app.getBean(Calculator.class);
-
-        int result = calculator.div(2, 1);
-
-        System.out.println("result = "+result);
+        Calculator ca = app.getBean(Calculator.class);
+        try {
+            ca.div(2, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         app.close();
-
-    }
-    public void test(){
 
     }
 }

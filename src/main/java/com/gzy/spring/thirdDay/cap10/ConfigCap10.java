@@ -23,12 +23,11 @@ public class ConfigCap10 {
 
     @Bean
     public Calculator calculator(){
-        return  new Calculator();
+        return new Calculator();
     }
 
     @Bean
     public LogAspects logAspects(){
         return new LogAspects();
     }
-
 }
