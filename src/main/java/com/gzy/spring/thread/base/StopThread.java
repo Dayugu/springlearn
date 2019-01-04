@@ -14,10 +14,8 @@ public class StopThread  {
         thread.start();
         try {
             System.out.println("按任意键停止线程");
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             thread.interrupt();
-
-
 
             thread.join();
             System.out.println("线程已退出");
@@ -29,14 +27,15 @@ public class StopThread  {
 
     static class OneThread extends Thread{
         public void run(){
-           while(!Thread.currentThread().isInterrupted()){
-               try {
-//                   Thread.sleep(2000);
-                   System.out.println("thread is running.....");
 
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
+            while(!Thread.currentThread().isInterrupted()){
+                try {
+                    Thread.sleep(2000);
+                    System.out.println("thread is sleep.....中断标志位："+Thread.currentThread().isInterrupted());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //System.out.println("thread is running.....中断标志位："+Thread.currentThread().isInterrupted());
            }
         }
     }
